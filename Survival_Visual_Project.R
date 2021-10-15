@@ -204,6 +204,11 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                           
                           p(withMathJax(sprintf("TALK ABOUT HOW DATA ARE ACTUALLY DIFFERENT FORMAT AND SHOWCASE (AT LEAST PART) OF THE PREVIOUS DATASET IN THE FORMAT USED TO MAKE KM PLOT"))),
                           
+                          tags$br(),
+                          hr(),
+                          plotlyOutput("survplot", width = "90%"),
+                          tags$br(),
+                          hr(),
                           
                           h1("The Hazard Function"),
                           h3("bla"),
@@ -413,7 +418,7 @@ server <- function(input, output) {
   
   
   ###################################################################
-  #  Boston University Kaplan-Meier Data Visualization Example
+  #  Boston University Kaplan-Meier Table Example
   ###################################################################
   
   time <- c(0,1,2,3,5,6,9,10,11,12,13,14,17,18,19,21,23,24)
@@ -429,6 +434,41 @@ server <- function(input, output) {
   }, options = list(pageLength = 25, info = FALSE, rownames= FALSE, class="compact"))
   
   
+  ###################################################################
+  #  Boston University Kaplan-Meier Curve Example
+  ###################################################################
+  
+  df_mod <- data.frame(matrix(ncol = 2, nrow = 0))
+  x <- c("time", "status")
+  colnames(df_mod) <- x
+  
+  df_mod[nrow(df_mod) + 1,] = c(1,1)
+  df_mod[nrow(df_mod) + 1,] = c(2,0)
+  df_mod[nrow(df_mod) + 1,] = c(3,1)
+  df_mod[nrow(df_mod) + 1,] = c(5,1)
+  df_mod[nrow(df_mod) + 1,] = c(1,0)
+  df_mod[nrow(df_mod) + 1,] = c(9,0)
+  df_mod[nrow(df_mod) + 1,] = c(10,0)
+  df_mod[nrow(df_mod) + 1,] = c(11,0)
+  df_mod[nrow(df_mod) + 1,] = c(12,0)
+  df_mod[nrow(df_mod) + 1,] = c(13,0)
+  df_mod[nrow(df_mod) + 1,] = c(14,1)
+  df_mod[nrow(df_mod) + 1,] = c(17,1)
+  df_mod[nrow(df_mod) + 1,] = c(17,0)
+  df_mod[nrow(df_mod) + 1,] = c(18,0)
+  df_mod[nrow(df_mod) + 1,] = c(19,0)
+  df_mod[nrow(df_mod) + 1,] = c(21,0)
+  df_mod[nrow(df_mod) + 1,] = c(23,1)
+  df_mod[nrow(df_mod) + 1,] = c(24,0)
+  df_mod[nrow(df_mod) + 1,] = c(24,0)
+  df_mod[nrow(df_mod) + 1,] = c(24,0)
+  
+  lsurv <- survfit(Surv(time, status) ~ 1, df_mod)
+  ggsurvplot(lsurv, data = df_mod, conf.int = FALSE)
+  
+  survplot <- ggsurvplot(lsurv, data = df_mod, conf.int = FALSE)
+  
+  output$survplot <- renderPlotly({ggplotly(survplot[[1]])})
   
 }
 
