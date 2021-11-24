@@ -53,7 +53,7 @@ ui <- navbarPage(theme = shinytheme("cerulean"),
                           hr(),
                           
                           h4("Tiffany Hsieh, Franklin Fuchs, Bowen Chen"),
-                          h5("Methods in Biostatistics I - Final Project"),
+                          h5("Methods in Biostatistics"),
                           
                           hr(),
                           
