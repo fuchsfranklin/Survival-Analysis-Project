@@ -718,6 +718,7 @@ server <- function(input, output) {
   survplot3 <- ggsurvplot(fit = km_vaccine,
                           data = data_sub2,
                           conf.int = TRUE,
+                          pval = TRUE, 
                           # Add axis label & title
                           title = "Kaplan-Meier Estimate of Covid Infection",
                           subtitle = " (N=2,857) ",
@@ -733,6 +734,7 @@ server <- function(input, output) {
                           # Add axis label & title
                           data = data_sub2,
                           conf.int = TRUE,
+                          pval = TRUE, 
                           title = "Kaplan-Meier Estimate of Covid Infection",
                           subtitle = " (N=2,857) ",
                           xlab = "Post entry Time (Days)",
