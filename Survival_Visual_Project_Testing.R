@@ -323,8 +323,8 @@ ui <- navbarPage(
         p(withMathJax(sprintf("If the test result is smaller than the critical value, then we fail to reject the null hypothesis. On the other hand, if it is greater than the critical value, we reject the null hypothesis. "))),
       ),
       tabPanel(
-        "8. Comparing Survival Curves and The Log Rank Test",
-        h1("Comparing Survival Curves and The Log Rank Test"),
+        "8. Comparing Survival Curves and The Log-Rank Test",
+        h1("Comparing Survival Curves and The Log-Rank Test"),
         p(withMathJax(sprintf("The log-rank test is a large-sample chi-square test which can be used to determine whether the Kaplan-Meier curves for two or more groups are statistically equivalent or not. When saying 'statistically equivalent' Kaplan-Meier curves, we mean that there is no evidence that suggest a difference of survival curves in the true population. Since the log-rank test is a chi-square test, it makes use of observed versus expected cell counts over categories of outcomes which are defined by each of the ordered failure times for the entire set of data being analyzed."))),
         h2("Log-Rank Test for Two Groups"),
         p(withMathJax(sprintf("The null hypothesis \\(H_0\\) being tested should always be that there is no difference between the two survival curves. The idea is to compare two groups of, for example, treatment and placebo. We assume that for each ordered failure time \\((t_f)\\) in the entire dataset, we have the numbers of subjects \\((m_{if})\\) failing at that time, separately by group \\((i=1,2)\\), followed by the numbers of subjects \\((n_{if})\\) in the risk set at that time, also separately by group \\((i=1,2)\\). Therefore, the following cell counts can be calculated as $$ e_{1f}=(\\frac{n_{1f}}{n_{1f}+n_{2f}}) \\cdot (m_{1f} + m_{2f}) \\\\ \\text{and} \\\\ e_{2f}=(\\frac{n_{2f}}{n_{1f}+n_{2f}}) \\cdot (m_{1f} + m_{2f}),$$ where the term \\((\\frac{n_{1f}}{n_{1f}+n_{2f}})\\) is the proportion in the risk set and the term \\((m_{1f}+m_{2f})\\) is the number of failures over both groups respectively. Thus, the formula above calculates the expected number at time \\(f\\) as the multiplication of proportion in risk set at time \\(f\\) and number of failures over both groups at time \\(f\\)."))),
@@ -334,6 +334,18 @@ ui <- navbarPage(
         p(withMathJax(sprintf("Finally, it is important to mention that the approximation of the log-rank statistic can be calculated by the sum of the square of difference between the observed and expected values divided by the expected value for each group as $$ \\chi^{2} \\approx \\sum_{i}^{\\text{# of groups}} \\frac{(O_i - E_i)^{2}}{E_i}, $$ which we know to correspond to the chi-square statistic from the family of chi-square tests in class and also from the previous section on the chi-square distribution. "))),
         h2("The Log-Rank Test for Several Groups"),
         p(withMathJax(sprintf("The log-rank test can also be used to compare the survival curves of three or more groups. The null hypothesis \\(H_0\\) in this case is that all survival curves are the same. In this case, the calculation of the log-rank statistic involves both variances and covariances of summed observed minus expected scores for each group and is best described using linear algebra. We do not further cover the theory for the log-rank test for several groups, as it is not used in the applied part and thus out of the scope of this project."))),
+      ),
+      
+      tabPanel(
+        "9. Cox Proportional Hazards Regression",
+        h1("Cox Proportional Hazards Regression"),
+        p(withMathJax(sprintf("The Cox regression model is usually used to investigate the effect of several factors on survival simultaneously. Unlike the Log-Rank test which can only be used to when the predictor var-iable is categorical, the Cox regression model can be used to assess both quantitative predictor variables and for categorical variables."))),
+        h2("Model Intuition"),
+        p(withMathJax(sprintf("The Cox model is usually written in terms of the proportional-hazard model formula as $$ h(t,\\boldsymbol{X}) = h_{0}(t)e^{\\sum_{i=1}^{p} \\beta_{i}X_{i}},$$ where \\(t\\) is the survival time and \\(\\boldsymbol{X}=(X_1, X_2, ..., X_p)\\) is the vector of predictor variables. Intuitively, this formula gives an expression for the hazard at time \\(t\\) for an individual with a given specification of a set of explanatory variables denoted by the \\(\\boldsymbol{X}\\), where the predictor variables are being incorporated to to predict an individual’s hazard. It is important to mention that the Cox model formula is the product of the time-dependent baseline hazard function, \\(h_{0}(t)\\), and the exponential expression to the linear sum of \\(\\beta_{i}X_{i}\\), where the sum is over the \\(p\\) explanatory \\(\\boldsymbol{X}\\) variables."))),
+        tags$br(),
+        p(withMathJax(sprintf("One property of the formula is that if all the \\(X_i's\\) are equal to zero, the exponential part of the for-mula becomes e to the zero, which is equal to 1. Then the formula reduces to \\(h_{0}(t)\\), which is why \\(h_{0}(t)\\) is called the baseline function. Another property of the Cox model is that the baseline hazard, \\(h_{0}(t)\\), is an unspecified function, which makes the Cox model a semi-parametric model. "))),
+        h2("Further Comments"),
+        p(withMathJax(sprintf("By using the Cox regression model, we can obtain a good estimates of regression coefficients, hazard ratios of interest, and adjusted survival curves for a wide variety of data situations. When we are not sure about which parametric model is the correct model to use, we can use the Cox model to get a close approximation of the desired result, which is comparable to those obtained by a correct model."))),
       ),
     ),
   ),
@@ -358,9 +370,9 @@ ui <- navbarPage(
       tags$br(),
       tags$li(sprintf("Confidence intervals for KM curves.")),
       tags$br(),
-      tags$li(sprintf("Demonstrate how to obtain the Log rank statistics using the COVID-19 dataset.")),
+      tags$li(sprintf("Demonstrate how to obtain the Log-rank statistics using the COVID-19 dataset.")),
       tags$br(),
-      tags$li(sprintf("Log rank test to compare the survival distrubutions of two populations.")),
+      tags$li(sprintf("Log-rank test to compare the survival distrubutions of two populations.")),
       tags$br(),
       tags$li(sprintf("Data application of Cox PH model.")),
       tags$br()
@@ -404,7 +416,7 @@ ui <- navbarPage(
     tags$br(),
     gt_output("table1"),
     tags$br(),
-    h3("Data Analysis and Results Visualization"),
+    h3("Exploratory Data Analysis and Results Visualization"),
     tags$br(),
     p(withMathJax(sprintf("From the two-by-two table above, we can see that the vaccinated people have a lower risk of getting infected with COVID-19, so we want to perform a Chi-squared test whether the differnece of infection rate among the two groups is statistically significant. Thusm we perform the chi-square test to determine the association between vaccination status and Covid-19 infection."))),
     tags$br(),
@@ -458,7 +470,22 @@ ui <- navbarPage(
     tags$br(),
     hr(),
     tags$br(),
-    p(withMathJax(sprintf("Demonstration of deriving the Log-rank statistics $$
+    
+    h3("Log-Rank Test Demonstration and Data Application"),
+    
+    tags$br(),
+    
+    p(withMathJax(sprintf("To better understand the log-rank test as outlined in the theory section, we will demonstrate an R calculation for a few observations from our data in R, and then calculate the corresponding test-statistic using a table by hand. First, we sample ten obervsations and manually calculate the test-statistic as follows."))),
+    
+    tags$br(),
+    
+    verbatimTextOutput("vtout10"),
+    verbatimTextOutput("vtout11"),
+    
+    tags$br(),
+    
+    p(withMathJax(sprintf("Now, listing these observations in a table and calculating the corresponding dependencies, we can calculate both observed and expected totals.
+    $$
                                                   \\begin{array}{llllllllll}
                                                   \\hline
                                                   & & \\text{# failures} &  & \\text{# in risk set} & & \\text{# expected} & & \\text{Observed-Expected} & \\\\
@@ -475,24 +502,43 @@ ui <- navbarPage(
                                                   \\text{Totals} &  & 0 & 8 & &  & 4.95 \\cdot 1 & 3.05 \\cdot 1 & -4.96 & 4.96 \\\\
                                                   \\hline
                                                   \\end{array} $$
-                                                 which would thus yield $$\\text{Log-rank statistic} = \\frac{(O_2 - E_2)^2}{\\text{Var}(O_2 - E_2)} = \\frac{(4.96)^2}{1.83} = 13.47$$, which we compute in R as "))),
-    verbatimTextOutput("vtout10"),
-    verbatimTextOutput("vtout11"),
-    p(withMathJax(sprintf("Perform Log rank test (vaccination status) Using the vaccination status and ethnicity that we plotted our KM curves previously, we now implement the log-rank test to formally conduct between-groups significant test. Below we first conduct a log-rank test that equally weights observations over the entire follow-up time. With \\(rho = 0\\), is the log-rank or Mantel-Haenszel test; with \\(rho = 1\\) is equivalent to the Peto & Peto modification of the Gehan-Wilcoxon test."))),
+                          Finally, we can calculate the corresponding Log-rank test statistic as below, which we observe to correspond to our calculation in R. 
+                                                  
+                                                  $$\\text{Log-rank statistic} = \\frac{(O_2 - E_2)^2}{\\text{Var}(O_2 - E_2)} = \\frac{(4.96)^2}{1.83} = 13.47.$$"))),
+    
+    tags$br(),
+    p(withMathJax(sprintf("Now, we perform the Log-rank test using the vaccination status and ethnicity that we plotted our Kaplan-Meier curves previously, and so we now implement the log-rank test to formally conduct a between-groups significance test."))),
+    p(withMathJax(sprintf("Below, we conduct a Log-rank test that equally weights observations over the entire follow-up time. We observe this test to yield a p-value of approximately zero, which confirms our suspicions of the Kaplan-Meier plot where groups are stratified by treatment status."))),
+    tags$br(),
     verbatimTextOutput("vtout12"),
     verbatimTextOutput("vtout13"),
-    p(withMathJax(sprintf("Perform Log rank test (vaccination status- weighted)"))),
-    verbatimTextOutput("vtout14"),
-    verbatimTextOutput("vtout15"),
-    p(withMathJax(sprintf("Perform Log rank test (Ethnicity)"))),
+    tags$br(),
+    p(withMathJax(sprintf("Performing the Log-rank test for ethnicity, we also confirm our results of the Kaplan-Meier plot stratified by ethnicity, where with \\(p-value=0.2\\) we fail to reject \\(H_0\\) that the survival distributions are different."))),
+    tags$br(),
     verbatimTextOutput("vtout16"),
     verbatimTextOutput("vtout17"),
-    p(withMathJax(sprintf("Now to further explore this time-to-event dataset, we may want to know how much does one variable or multiple variables accounts for the effect of multiple variables. Here, we want to know how much does the status of vaccination affect the 'hazard' of being infected with COVID-19."))),
     tags$br(),
-    p(withMathJax(sprintf("Cox PH model"))),
+    h3("Cox Proportional Hazards Model"),
+    p(withMathJax(sprintf("Now to further explore this time-to-event dataset, we may want to know how much does one variable or multiple variables accounts for the effect of multiple variables. Here, we want to know how much does the status of vaccination affect the 'hazard' of being infected with COVID-19, for which the proportional hazards model is most appropriate, which we compute in R below."))),
+    tags$br(),
     verbatimTextOutput("vtout18"),
     verbatimTextOutput("vtout19"),
-    p(withMathJax(sprintf("In this univariate Cox analysis, the covariate 'Vaccination status' has a p-value <0.001, and a hazard ratio 0.0378, indicating a strong relationship between the vacciation status and decreased risk of COVID-19 infection. The hazard ratio has a similar interpretation of the strength of the effect as an odds ratio. For example, a hazard ratio of 0.04 can be interpreted as comparing to the unvaccinated group, people in the vaccinated group have 0.04 times the hazard of being infected with COVID-19."))),
+    tags$br(),
+    p(withMathJax(sprintf("From this univariate Cox analysis, we observe the covariate 'Vaccination status' to have a p-value <0.001 and a hazard ratio 0.0378 (From both the analysis output and the summary table below), indicating a strong relationship between the vacciation status and decreased risk of COVID-19 infection. The hazard ratio has a similar interpretation of the strength of the effect as an odds ratio. For example, a hazard ratio of 0.04 can be interpreted as comparing to the unvaccinated group, people in the vaccinated group have 0.04 times the hazard of being infected with COVID-19."))),
+    
+    tags$br(),
+    
+    gt_output("table3"),
+    
+    tags$br(),
+    
+    p(withMathJax(sprintf("Another more visual way to present the results of a Cox regression model is using tbl_regression from the gtsummary package, which produces a plot of the Hazard ratio with its corresponding 95%% confidence interval as the final result."))),
+    
+    tags$br(),
+    
+    tags$br(),
+    plotOutput("hazardplot", height = "600px"),
+    
   ),
 
   ###################################################################
@@ -578,6 +624,15 @@ server <- function(input, output) {
     as_gt()
 
   output$table2 <- render_gt(table2)
+  
+  table3 <- coxph(Surv(EventTimePrimaryD57, EventIndPrimaryD57)~Trt, data = data_sub2) %>% 
+    gtsummary::tbl_regression(exp = TRUE) %>% as_gt()
+  
+  output$table3 <- render_gt(table3)
+  
+  hazardplot <- ggforest(coxph(Surv(EventTimePrimaryD57, EventIndPrimaryD57)~Trt, data = data_sub2), data = data_sub2)
+  
+  output$hazardplot <- renderPlot({hazardplot })
 
   lf_table <- survfit(Surv(EventTimePrimaryD57, EventIndPrimaryD57) ~ 1, data = data_sub2)
 
