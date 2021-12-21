@@ -44,7 +44,7 @@ colnames(data_sub2) <- c("X", "Trt", "Hispanic", "Black", "Asian", "Native", "Pa
 ###################################################################
 ui <- navbarPage(
   theme = shinytheme("cerulean"),
-  title = "An Introduction and Application of Basic Surival Analysis Ideas",
+  title = "An Introduction and Application of Basic Survival Analysis Ideas",
 
   ###################################################################
   # Introductory Tab
@@ -323,28 +323,27 @@ ui <- navbarPage(
         p(withMathJax(sprintf("If the test result is smaller than the critical value, then we fail to reject the null hypothesis. On the other hand, if it is greater than the critical value, we reject the null hypothesis. "))),
       ),
       tabPanel(
-        "8. Comparing Survival Curves and The Log-Rank Test",
+        "8. The Log-Rank Test and Cox Proportional Hazards",
         h1("Comparing Survival Curves and The Log-Rank Test"),
         p(withMathJax(sprintf("The log-rank test is a large-sample chi-square test which can be used to determine whether the Kaplan-Meier curves for two or more groups are statistically equivalent or not. When saying 'statistically equivalent' Kaplan-Meier curves, we mean that there is no evidence that suggest a difference of survival curves in the true population. Since the log-rank test is a chi-square test, it makes use of observed versus expected cell counts over categories of outcomes which are defined by each of the ordered failure times for the entire set of data being analyzed."))),
-        h2("Log-Rank Test for Two Groups"),
+        h3("Log-Rank Test for Two Groups"),
         p(withMathJax(sprintf("The null hypothesis \\(H_0\\) being tested should always be that there is no difference between the two survival curves. The idea is to compare two groups of, for example, treatment and placebo. We assume that for each ordered failure time \\((t_f)\\) in the entire dataset, we have the numbers of subjects \\((m_{if})\\) failing at that time, separately by group \\((i=1,2)\\), followed by the numbers of subjects \\((n_{if})\\) in the risk set at that time, also separately by group \\((i=1,2)\\). Therefore, the following cell counts can be calculated as $$ e_{1f}=(\\frac{n_{1f}}{n_{1f}+n_{2f}}) \\cdot (m_{1f} + m_{2f}) \\\\ \\text{and} \\\\ e_{2f}=(\\frac{n_{2f}}{n_{1f}+n_{2f}}) \\cdot (m_{1f} + m_{2f}),$$ where the term \\((\\frac{n_{1f}}{n_{1f}+n_{2f}})\\) is the proportion in the risk set and the term \\((m_{1f}+m_{2f})\\) is the number of failures over both groups respectively. Thus, the formula above calculates the expected number at time \\(f\\) as the multiplication of proportion in risk set at time \\(f\\) and number of failures over both groups at time \\(f\\)."))),
         tags$br(),
-        p(withMathJax(sprintf("When we are calculating the log-rank test statistic, we need to calculate the sum of all the differences between the observed and expected counts of all failure times \\((f)\\) as $$ O_i - E_i = \\sum_{f=1}^{n} (m_{if} - e_{if}), $$ and divide this difference by the estimated variance of the summed observed minus expected score, which is $$ \\text{Var}(O_i - E_i) = \\sum_{j} \\frac{n_{1f}n_{2f}(m_{1f} + m_{2f})(n_{1f} + n_{2f} + m_{1f} - m_{2f})}{(n_{1f} + n_{2f})^{2}(n_{1f} + n_{2f} - 1)}, $$ where \\(n\\) here is equal to the number of failure times and \\((i=1,2)\\). Therefore, we have the under the null hypothesis\\(H_0\\) we have the log-rank statistic as $$\\text{Log-rank statistic} = \\frac{(O_2 - E_2)^2}{\\text{Var}(O_2 - E_2)}, $$ which is approximately chi-square distributed with one degree of freedom. The p-value for the log-rank test can be determined from tables of the chi-square distribution. Then, we can determine whether we should reject our null hypothesis or not, or in other terms, whether or not there is a statistically difference between the two survival curves."))),
+        p(withMathJax(sprintf("When we are calculating the log-rank test statistic, we need to calculate the sum of all the differences between the observed and expected counts of all failure times \\((f)\\) as $$ O_i - E_i = \\sum_{f=1}^{n} (m_{if} - e_{if}), $$ and divide this difference by the estimated variance of the summed observed minus expected score, which is $$ \\text{Var}(O_i - E_i) = \\sum_{j} \\frac{n_{1f}n_{2f}(m_{1f} + m_{2f})(n_{1f} + n_{2f} + m_{1f} - m_{2f})}{(n_{1f} + n_{2f})^{2}(n_{1f} + n_{2f} - 1)}, $$ where \\(n\\) here is equal to the number of failure times and \\((i=1,2)\\). Therefore, we have the under the null hypothesis \\(H_0\\) we have the log-rank statistic as $$\\text{Log-rank statistic} = \\frac{(O_2 - E_2)^2}{\\text{Var}(O_2 - E_2)}, $$ which is approximately chi-square distributed with one degree of freedom. The p-value for the log-rank test can be determined from tables of the chi-square distribution. Then, we can determine whether we should reject our null hypothesis or not, or in other terms, whether or not there is a statistically difference between the two survival curves."))),
         tags$br(),
         p(withMathJax(sprintf("Finally, it is important to mention that the approximation of the log-rank statistic can be calculated by the sum of the square of difference between the observed and expected values divided by the expected value for each group as $$ \\chi^{2} \\approx \\sum_{i}^{\\text{# of groups}} \\frac{(O_i - E_i)^{2}}{E_i}, $$ which we know to correspond to the chi-square statistic from the family of chi-square tests in class and also from the previous section on the chi-square distribution. "))),
-        h2("The Log-Rank Test for Several Groups"),
+        h3("The Log-Rank Test for Several Groups"),
         p(withMathJax(sprintf("The log-rank test can also be used to compare the survival curves of three or more groups. The null hypothesis \\(H_0\\) in this case is that all survival curves are the same. In this case, the calculation of the log-rank statistic involves both variances and covariances of summed observed minus expected scores for each group and is best described using linear algebra. We do not further cover the theory for the log-rank test for several groups, as it is not used in the applied part and thus out of the scope of this project."))),
-      ),
-      
-      tabPanel(
-        "9. Cox Proportional Hazards Regression",
+        
+        tags$br(),
+        
         h1("Cox Proportional Hazards Regression"),
         p(withMathJax(sprintf("The Cox regression model is usually used to investigate the effect of several factors on survival simultaneously. Unlike the Log-Rank test which can only be used to when the predictor var-iable is categorical, the Cox regression model can be used to assess both quantitative predictor variables and for categorical variables."))),
-        h2("Model Intuition"),
-        p(withMathJax(sprintf("The Cox model is usually written in terms of the proportional-hazard model formula as $$ h(t,\\boldsymbol{X}) = h_{0}(t)e^{\\sum_{i=1}^{p} \\beta_{i}X_{i}},$$ where \\(t\\) is the survival time and \\(\\boldsymbol{X}=(X_1, X_2, ..., X_p)\\) is the vector of predictor variables. Intuitively, this formula gives an expression for the hazard at time \\(t\\) for an individual with a given specification of a set of explanatory variables denoted by the \\(\\boldsymbol{X}\\), where the predictor variables are being incorporated to to predict an individual’s hazard. It is important to mention that the Cox model formula is the product of the time-dependent baseline hazard function, \\(h_{0}(t)\\), and the exponential expression to the linear sum of \\(\\beta_{i}X_{i}\\), where the sum is over the \\(p\\) explanatory \\(\\boldsymbol{X}\\) variables."))),
+        h3("Model Intuition"),
+        p(withMathJax(sprintf("The Cox model is usually written in terms of the proportional-hazard model formula as $$ h(t,\\boldsymbol{X}) = h_{0}(t)e^{\\sum_{i=1}^{p} \\beta_{i}X_{i}},$$ where \\(t\\) is the survival time and \\(\\boldsymbol{X}=(X_1, X_2, ..., X_p)\\) is the vector of predictor variables. Intuitively, this formula gives an expression for the hazard at time \\(t\\) for an individual with a given specification of a set of explanatory variables denoted by the \\(\\boldsymbol{X}\\), where the predictor variables are being incorporated to to predict an individual's hazard. It is important to mention that the Cox model formula is the product of the time-dependent baseline hazard function, \\(h_{0}(t)\\), and the exponential expression to the linear sum of \\(\\beta_{i}X_{i}\\), where the sum is over the \\(p\\) explanatory \\(\\boldsymbol{X}\\) variables."))),
         tags$br(),
         p(withMathJax(sprintf("One property of the formula is that if all the \\(X_i's\\) are equal to zero, the exponential part of the for-mula becomes e to the zero, which is equal to 1. Then the formula reduces to \\(h_{0}(t)\\), which is why \\(h_{0}(t)\\) is called the baseline function. Another property of the Cox model is that the baseline hazard, \\(h_{0}(t)\\), is an unspecified function, which makes the Cox model a semi-parametric model. "))),
-        h2("Further Comments"),
+        h3("Notes on Application"),
         p(withMathJax(sprintf("By using the Cox regression model, we can obtain a good estimates of regression coefficients, hazard ratios of interest, and adjusted survival curves for a wide variety of data situations. When we are not sure about which parametric model is the correct model to use, we can use the Cox model to get a close approximation of the desired result, which is comparable to those obtained by a correct model."))),
       ),
     ),
@@ -526,18 +525,36 @@ ui <- navbarPage(
     tags$br(),
     p(withMathJax(sprintf("From this univariate Cox analysis, we observe the covariate 'Vaccination status' to have a p-value <0.001 and a hazard ratio 0.0378 (From both the analysis output and the summary table below), indicating a strong relationship between the vacciation status and decreased risk of COVID-19 infection. The hazard ratio has a similar interpretation of the strength of the effect as an odds ratio. For example, a hazard ratio of 0.04 can be interpreted as comparing to the unvaccinated group, people in the vaccinated group have 0.04 times the hazard of being infected with COVID-19."))),
     
+    hr(),
     tags$br(),
     
     gt_output("table3"),
     
     tags$br(),
+    hr(),
     
     p(withMathJax(sprintf("Another more visual way to present the results of a Cox regression model is using tbl_regression from the gtsummary package, which produces a plot of the Hazard ratio with its corresponding 95%% confidence interval as the final result."))),
     
     tags$br(),
     
+    verbatimTextOutput("vtout20"),
+    
+    hr(),
     tags$br(),
     plotOutput("hazardplot", height = "600px"),
+    tags$br(),
+    hr(),
+    
+    verbatimTextOutput("vtout21"),
+    
+    hr(),
+    tags$br(),
+    plotOutput("hazardplot2", height = "600px"),
+    tags$br(),
+    hr(),
+    
+    p(withMathJax(sprintf("Briefly, a Hazard Ratio > 1 indicates an increased risk of an event (here, COVID-19 infection) when specific conditions were met. A Hazard Ratio < 1, on the other hand, indicates a decreased risk of an event. So again, here on the plot, comparing to the reference group (unvaccinated), people who are vaccinated had a Hazard Ratio of 0.04 (0.03, 0.05), indicating that getting vaccinated decreased the risk of being infecting with COVID-19 significantly. Regarding 'Ethnicity', being Hispanic or non-Hispanic did not have the effect of changing the risk of COVID-19 infection, since the point estimate of the Hazard Ratio is very close to \\(H_0\\) that the Hazard Ratio = 1."))),
+    tags$br(),
     
   ),
 
@@ -632,7 +649,11 @@ server <- function(input, output) {
   
   hazardplot <- ggforest(coxph(Surv(EventTimePrimaryD57, EventIndPrimaryD57)~Trt, data = data_sub2), data = data_sub2)
   
+  hazardplot2 <- ggforest(coxph(Surv(EventTimePrimaryD57, EventIndPrimaryD57)~Trt + Hispanic, data = data_sub2), data = data_sub2)
+  
   output$hazardplot <- renderPlot({hazardplot })
+  
+  output$hazardplot2 <- renderPlot({hazardplot2 })
 
   lf_table <- survfit(Surv(EventTimePrimaryD57, EventIndPrimaryD57) ~ 1, data = data_sub2)
 
@@ -959,6 +980,18 @@ server <- function(input, output) {
       "## Wald test            = 556.2  on 1 df,   p=<2e-16",
       "## Score (logrank) test = 1229  on 1 df,   p=<2e-16",
       sep = "\n"
+    )
+  })
+  
+  output$vtout21 <- renderPrint({
+    cat("ggforest(coxph(Surv(EventTimePrimaryD57, EventIndPrimaryD57)~Treatment, data = data_sub), data = data_sub)",
+        sep = "\n"
+    )
+  })
+  
+  output$vtout22 <- renderPrint({
+    cat("ggforest(coxph(Surv(EventTimePrimaryD57, EventIndPrimaryD57)~Treatment+Hispanic, data = data_sub), data = data_sub)",
+        sep = "\n"
     )
   })
 
