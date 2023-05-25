@@ -946,15 +946,6 @@ server <- function(input, output) {
   
   output$survplot <- renderPlotly({ggplotly(survplot[[1]])})
   
-  ###################################################################
-  #  Tiffany's Analysis Inclusion
-  ###################################################################
-  
-  
-  # output$markdown <- renderUI({
-  #   HTML(markdown::markdownToHTML(knit('covid_application2.rmd', quiet = TRUE)))
-  # })
-  
 }
 
 ###################################################################
